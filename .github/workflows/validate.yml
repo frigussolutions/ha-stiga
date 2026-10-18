@@ -19,9 +19,8 @@ jobs:
       - uses: hacs/action@main
         with:
           category: integration
-          # brands: no entry in home-assistant/brands. license: CC BY-NC-SA 4.0 (required by
-          # upstream stiga-api's ShareAlike) has no GitHub/SPDX detection, so the check can't pass.
-          ignore: brands license
+          # brands: no entry in home-assistant/brands.
+          ignore: brands
 
   tests:
     runs-on: ubuntu-latest

@@ -1,7 +1,8 @@
 """STIGA A-series robot MQTT protocol: schemaless protobuf codec and status model.
 
 Field numbers and code tables are ported from the reverse-engineered stiga-api project
-(https://github.com/matthewgream/stiga-api, CC BY-NC-SA 4.0) and verified against an A6v.
+(https://github.com/matthewgream/stiga-api, used under MIT by permission of its author,
+Matthew Gream) and verified against an A6v.
 """
 
 from __future__ import annotations

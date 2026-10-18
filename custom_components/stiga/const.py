@@ -7,6 +7,9 @@ DOMAIN = "stiga"
 CONF_BLOCKS = "blocks"
 MAX_BLOCKS = 3
 
+# Upstream project the protocol was ported from; attributed in the UI.
+STIGA_API_URL = "https://github.com/matthewgream/stiga-api"
+
 # Public Firebase web key of the STIGA.GO app (identical for every user).
 FIREBASE_API_KEY = "AIzaSyCPtRBU_hwWZYsguHp9ucGrfNac0kXR6ug"
 FIREBASE_AUTH_URL = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword"

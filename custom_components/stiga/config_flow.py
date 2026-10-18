@@ -15,10 +15,13 @@ from homeassistant.helpers.selector import TimeSelector
 from homeassistant.util import slugify
 
 from .api import CannotConnect, InvalidAuth, StigaAuth
-from .const import CONF_BLOCKS, DOMAIN, MAX_BLOCKS
+from .const import CONF_BLOCKS, DOMAIN, MAX_BLOCKS, STIGA_API_URL
 from .coordinator import blocks_from_options
 
 USER_SCHEMA = vol.Schema({vol.Required(CONF_EMAIL): str, vol.Required(CONF_PASSWORD): str})
+
+# Attribution to the upstream project, shown while setting up and once set up (licence condition).
+ATTRIBUTION = {"stiga_api_url": STIGA_API_URL}
 
 
 class StigaConfigFlow(ConfigFlow, domain=DOMAIN):
@@ -52,9 +55,15 @@ class StigaConfigFlow(ConfigFlow, domain=DOMAIN):
                 return self.async_create_entry(
                     title=f"STIGA ({email})",
                     data={CONF_EMAIL: email, CONF_PASSWORD: user_input[CONF_PASSWORD]},
+                    description_placeholders=ATTRIBUTION,
                 )
             errors["base"] = error
-        return self.async_show_form(step_id="user", data_schema=USER_SCHEMA, errors=errors)
+        return self.async_show_form(
+            step_id="user",
+            data_schema=USER_SCHEMA,
+            description_placeholders=ATTRIBUTION,
+            errors=errors,
+        )
 
     async def async_step_reauth(self, entry_data: Mapping[str, Any]) -> ConfigFlowResult:
         """Start reauthentication after the password was rejected."""

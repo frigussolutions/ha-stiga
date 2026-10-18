@@ -7,6 +7,12 @@ the blade height and edit the weekly schedule — all from Home Assistant.
 > Not affiliated with or endorsed by STIGA. The protocol is reverse-engineered; STIGA can change
 > it at any time. Tested on a **STIGA A 6v** (firmware 0.2.x) with Home Assistant 2026.8.
 
+> [!NOTE]
+> **Built on Matthew Gream's [stiga-api](https://github.com/matthewgream/stiga-api).** This
+> integration uses only part of the robot protocol he reverse-engineered. His project also offers
+> a web interface, analysis tools and command-line tools for STIGA robots — have a look if you
+> want more than Home Assistant control.
+
 ## Features
 
 | Entity | What it does |
@@ -106,9 +112,13 @@ pytest
 ## Credits and licence
 
 The protocol knowledge comes from Matthew Gream's reverse-engineered
-[stiga-api](https://github.com/matthewgream/stiga-api) (Node.js), licensed CC BY-NC-SA 4.0. This
-integration is a Python port and adaptation of parts of it and is therefore licensed under the
-same terms: **[CC BY-NC-SA 4.0](LICENSE)** — free to use, share and adapt with attribution, not
-for commercial purposes, adaptations under the same licence.
+[stiga-api](https://github.com/matthewgream/stiga-api) (Node.js). This integration is a Python
+port and adaptation of the protocol elements it needs; the web interface, analysis tools and
+command-line tools are only in stiga-api.
+
+stiga-api itself is licensed CC BY-NC-SA 4.0. Matthew Gream has granted this integration a
+permanent licence for this derived work under the **[MIT licence](LICENSE)**, on the condition
+that the attribution and the link back to his project stay — please keep them in any fork. He
+also agreed to the integration downloading the client certificate from his repository.
 
 STIGA and STIGA.GO are trademarks of their respective owner.

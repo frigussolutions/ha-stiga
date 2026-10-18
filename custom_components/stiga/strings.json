@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "STIGA.GO account",
-        "description": "Sign in with the account you use in the STIGA.GO app.",
+        "description": "Sign in with the account you use in the STIGA.GO app.\n\nThis integration is built on Matthew Gream's [stiga-api]({stiga_api_url}), which also offers a web interface, analysis tools and command-line tools for STIGA robots.",
         "data": {
           "email": "Email",
           "password": "Password"
@@ -25,6 +25,9 @@
     "abort": {
       "already_configured": "This account is already configured.",
       "reauth_successful": "Re-authentication was successful."
+    },
+    "create_entry": {
+      "default": "Your robot mowers have been added.\n\nThe protocol support comes from Matthew Gream's [stiga-api]({stiga_api_url}); see it for more STIGA tools."
     }
   },
   "entity": {
