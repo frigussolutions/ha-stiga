@@ -1,0 +1,90 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "STIGA.GO account",
+        "description": "Sign in with the account you use in the STIGA.GO app.",
+        "data": {
+          "email": "Email",
+          "password": "Password"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Re-authenticate STIGA",
+        "description": "The password for {email} was rejected. Enter the current one.",
+        "data": {
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Invalid email or password.",
+      "cannot_connect": "Could not reach the STIGA cloud.",
+      "no_robots": "No robot mowers found on this account."
+    },
+    "abort": {
+      "already_configured": "This account is already configured.",
+      "reauth_successful": "Re-authentication was successful."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "status": {
+        "name": "Activity",
+        "state": {
+          "home": "Home",
+          "mowing": "Mowing",
+          "returning": "Returning home",
+          "rain_pause": "Rain pause",
+          "paused": "Paused",
+          "error": "Error",
+          "updating": "Updating",
+          "calibrating": "Calibrating"
+        }
+      },
+      "error": {
+        "name": "Status"
+      },
+      "garden_coverage": {
+        "name": "Garden coverage"
+      },
+      "zone_coverage": {
+        "name": "Zone coverage"
+      },
+      "schedule": {
+        "name": "Schedule"
+      }
+    },
+    "number": {
+      "cutting_height": {
+        "name": "Cutting height"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Schedule blocks",
+        "description": "Parts of the day that get a switch per weekday (on half hours). Leave a name empty to remove that block. An end of 00:00 means midnight. Mowing times outside these blocks are left untouched.",
+        "data": {
+          "block_1_name": "Block 1 name",
+          "block_1_start": "Block 1 start",
+          "block_1_end": "Block 1 end",
+          "block_2_name": "Block 2 name",
+          "block_2_start": "Block 2 start",
+          "block_2_end": "Block 2 end",
+          "block_3_name": "Block 3 name",
+          "block_3_start": "Block 3 start",
+          "block_3_end": "Block 3 end"
+        }
+      }
+    },
+    "error": {
+      "half_hour": "Times must be on a full or half hour.",
+      "missing_time": "Every named block needs a start and an end.",
+      "end_before_start": "A block must end after it starts.",
+      "duplicate_name": "Block names must be unique.",
+      "overlap": "Blocks must not overlap."
+    }
+  }
+}

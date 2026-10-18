@@ -1,0 +1,36 @@
+{
+  "entity": {
+    "sensor": {
+      "status": {
+        "default": "mdi:robot-mower",
+        "state": {
+          "home": "mdi:home-lightning-bolt",
+          "mowing": "mdi:robot-mower",
+          "returning": "mdi:home-import-outline",
+          "rain_pause": "mdi:weather-pouring",
+          "paused": "mdi:pause-circle",
+          "error": "mdi:alert-circle",
+          "updating": "mdi:update",
+          "calibrating": "mdi:tune-vertical"
+        }
+      },
+      "error": {
+        "default": "mdi:alert-circle-outline"
+      },
+      "garden_coverage": {
+        "default": "mdi:grass"
+      },
+      "zone_coverage": {
+        "default": "mdi:texture-box"
+      },
+      "schedule": {
+        "default": "mdi:calendar-clock"
+      }
+    },
+    "number": {
+      "cutting_height": {
+        "default": "mdi:grass"
+      }
+    }
+  }
+}
