@@ -121,4 +121,7 @@ permanent licence for this derived work under the **[MIT licence](LICENSE)**, on
 that the attribution and the link back to his project stay — please keep them in any fork. He
 also agreed to the integration downloading the client certificate from his repository.
 
+The integration icon is `robot-mower` from [Material Design Icons](https://pictogrammers.com/library/mdi/)
+(Apache-2.0).
+
 STIGA and STIGA.GO are trademarks of their respective owner.

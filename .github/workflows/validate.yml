@@ -19,8 +19,6 @@ jobs:
       - uses: hacs/action@main
         with:
           category: integration
-          # brands: no entry in home-assistant/brands.
-          ignore: brands
 
   tests:
     runs-on: ubuntu-latest
