@@ -12,7 +12,7 @@ from homeassistant.helpers.typing import ConfigType
 
 from .api import PINNED_BROKERS, CannotConnect, InvalidAuth, StigaAuth, StigaError, robot_broker
 from .certs import async_get_client_certificate
-from .const import DOMAIN
+from .const import DOMAIN, ISSUE_URL
 from .coordinator import StigaCoordinator
 from .frontend import async_register_card
 
@@ -44,7 +44,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: StigaConfigEntry) -> boo
         raise ConfigEntryError(
             translation_domain=DOMAIN,
             translation_key="unknown_broker",
-            translation_placeholders={"broker": ", ".join(unknown)},
+            translation_placeholders={"broker": ", ".join(unknown), "issue_url": ISSUE_URL},
         )
 
     try:

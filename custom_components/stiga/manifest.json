@@ -1,10 +1,10 @@
 {
   "domain": "stiga",
   "name": "STIGA Robot Mower",
+  "after_dependencies": ["frontend", "lovelace"],
   "codeowners": ["@frigussolutions"],
   "config_flow": true,
   "dependencies": ["http"],
-  "after_dependencies": ["frontend", "lovelace"],
   "documentation": "https://github.com/frigussolutions/ha-stiga",
   "integration_type": "hub",
   "iot_class": "cloud_push",

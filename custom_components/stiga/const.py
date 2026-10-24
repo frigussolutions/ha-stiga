@@ -9,6 +9,7 @@ MAX_BLOCKS = 3
 
 # Upstream project the protocol was ported from; attributed in the UI.
 STIGA_API_URL = "https://github.com/matthewgream/stiga-api"
+ISSUE_URL = "https://github.com/frigussolutions/ha-stiga/issues"
 
 # Public Firebase web key of the STIGA.GO app (identical for every user).
 FIREBASE_API_KEY = "AIzaSyCPtRBU_hwWZYsguHp9ucGrfNac0kXR6ug"

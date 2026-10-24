@@ -93,7 +93,7 @@
   },
   "exceptions": {
     "unknown_broker": {
-      "message": "STIGA MQTT broker {broker} has no pinned certificate authority, so its certificate cannot be verified and the integration will not connect. Please open an issue at https://github.com/frigussolutions/ha-stiga/issues."
+      "message": "STIGA MQTT broker {broker} has no pinned certificate authority, so its certificate cannot be verified and the integration will not connect. Please open an issue at {issue_url}."
     }
   }
 }
