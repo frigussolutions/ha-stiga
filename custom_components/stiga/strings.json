@@ -20,7 +20,8 @@
     "error": {
       "invalid_auth": "Invalid email or password.",
       "cannot_connect": "Could not reach the STIGA cloud.",
-      "no_robots": "No robot mowers found on this account."
+      "no_robots": "No robot mowers found on this account.",
+      "unknown_broker": "Your robot is on a STIGA server whose certificate this integration cannot verify yet. Please open an issue on the integration's GitHub page."
     },
     "abort": {
       "already_configured": "This account is already configured.",
@@ -88,6 +89,11 @@
       "end_before_start": "A block must end after it starts.",
       "duplicate_name": "Block names must be unique.",
       "overlap": "Blocks must not overlap."
+    }
+  },
+  "exceptions": {
+    "unknown_broker": {
+      "message": "STIGA MQTT broker {broker} has no pinned certificate authority, so its certificate cannot be verified and the integration will not connect. Please open an issue at https://github.com/frigussolutions/ha-stiga/issues."
     }
   }
 }

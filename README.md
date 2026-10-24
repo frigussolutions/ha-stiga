@@ -57,18 +57,21 @@ on schedules that whole block on that day; switching it off clears it.
 
 ## Dashboard card (optional)
 
-`dashboard/stiga-schedule-card.js` draws the schedule as a grid of checkboxes: one row per
-weekday, one column per block.
-
-1. Copy it to `<config>/www/stiga-schedule-card.js`.
-2. **Settings → Dashboards → ⋮ → Resources → Add**: `/local/stiga-schedule-card.js`,
-   type *JavaScript module*.
-3. Add the card:
+The integration ships a card that draws the schedule as a grid of checkboxes: one row per
+weekday, one column per block. It is served by the integration and registered as a dashboard
+resource automatically — no files to copy. Add it to a dashboard:
 
 ```yaml
 type: custom:stiga-schedule-card
 entity: sensor.stiga_a6v_schedule   # your robot's schedule sensor
 ```
+
+If your dashboard resources are managed in YAML, the integration cannot add a resource; it then
+loads the card on every Home Assistant page instead.
+
+Upgrading from 0.2.x, where the card was copied by hand: the old `/local/stiga-schedule-card.js`
+resource is switched over to the integration's copy, and `<config>/www/stiga-schedule-card.js`
+can be deleted.
 
 ## The client certificate
 
@@ -80,8 +83,10 @@ checked against a SHA-256 hash, and keeps it in Home Assistant's storage.
 To use your own copy instead (for example, extracted from the APK), put `client.crt` and
 `client.key` in `<config>/stiga/`; they take precedence.
 
-The brokers' certificates are verified against pinned copies of STIGA's CAs (`certs/`). A robot on
-a broker without a pinned CA still connects, with a warning in the log.
+Each STIGA broker has its own self-signed CA; the brokers' certificates are verified against
+pinned copies of them (`certs/`), covering every broker STIGA runs today. A robot on a broker
+without a pinned CA is refused rather than connected unverified (the MQTT password is your
+STIGA.GO login token) — please open an issue if that happens to you.
 
 ## How it works
 
@@ -90,8 +95,9 @@ a broker without a pinned CA still connects, with a warning in the log.
 - Live data and commands: MQTT over TLS to `robot-mqtt-<broker>.stiga.com:8883`, with
   schemaless protobuf messages (`<MAC>/LOG/STATUS`, `<MAC>/CMD_ROBOT`, …).
 - Settings changes send all settings back exactly as the robot reported them, with only the blade
-  height changed, so nothing else gets reset. Schedule changes rewrite the weekly bitmap in the
-  robot's own (packed varint) encoding.
+  height changed, so nothing else gets reset. Schedule changes do the same with the scheduling
+  settings, rewriting only the weekly bitmap in the robot's own (packed varint) encoding. A change
+  is refused if the robot reports anything that cannot be sent back unchanged.
 - Only known, harmless commands are ever sent. Some undocumented command ids are known to
   damage robots; they are not used.
 

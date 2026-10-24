@@ -28,6 +28,9 @@ from .const import (
 _LOGGER = logging.getLogger(__name__)
 
 CERT_DIR = Path(__file__).parent / "certs"
+# Brokers whose self-signed CA is pinned in certs/ca_<broker>.pem. These are all the STIGA
+# brokers that answer on the MQTT port; a robot on any other broker is refused.
+PINNED_BROKERS = frozenset({"broker", "broker2", "broker3", "broker4"})
 # Firebase answers these for a bad email/password; anything else is treated as transient.
 AUTH_ERRORS = {
     "EMAIL_NOT_FOUND",
@@ -49,6 +52,15 @@ class CannotConnect(StigaError):
 
 class InvalidAuth(StigaError):
     """The STIGA.GO credentials were rejected."""
+
+
+class UnknownBroker(StigaError):
+    """The robot's broker has no pinned CA, so its certificate cannot be verified."""
+
+
+def robot_broker(robot: dict[str, Any]) -> str:
+    """MQTT broker a robot from the garage is attached to."""
+    return robot.get("broker_id") or "broker"
 
 
 class StigaAuth:
@@ -117,18 +129,12 @@ class StigaAuth:
 
 
 def _build_ssl_context(broker: str, client_cert: tuple[str, str]) -> ssl.SSLContext:
-    """Client certificate from the STIGA.GO app; broker CA pinned when we have it."""
-    ca_file = CERT_DIR / f"ca_{broker}.pem"
-    if ca_file.exists():
-        ctx = ssl.create_default_context(cafile=str(ca_file))
-        # STIGA's CA lacks the key usage extension that strict mode (3.13+ default) demands.
-        ctx.verify_flags &= ~ssl.VERIFY_X509_STRICT
-    else:
-        # Each broker has its own self-signed CA; without a pinned copy we cannot verify.
-        _LOGGER.warning("No pinned CA for STIGA %s, broker certificate is not verified", broker)
-        ctx = ssl.create_default_context()
-        ctx.check_hostname = False
-        ctx.verify_mode = ssl.CERT_NONE
+    """Client certificate from the STIGA.GO app; broker verified against its pinned CA."""
+    if broker not in PINNED_BROKERS:
+        raise UnknownBroker(f"No pinned CA for STIGA {broker}")
+    ctx = ssl.create_default_context(cafile=str(CERT_DIR / f"ca_{broker}.pem"))
+    # STIGA's CA lacks the key usage extension that strict mode (3.13+ default) demands.
+    ctx.verify_flags &= ~ssl.VERIFY_X509_STRICT
     # ssl only loads a key pair from files: materialise them privately, just for the load.
     with tempfile.TemporaryDirectory(prefix="stiga_") as tmp:
         cert_file, key_file = Path(tmp) / "client.crt", Path(tmp) / "client.key"

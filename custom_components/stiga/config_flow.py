@@ -14,7 +14,7 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.selector import TimeSelector
 from homeassistant.util import slugify
 
-from .api import CannotConnect, InvalidAuth, StigaAuth
+from .api import PINNED_BROKERS, CannotConnect, InvalidAuth, StigaAuth, robot_broker
 from .const import CONF_BLOCKS, DOMAIN, MAX_BLOCKS, STIGA_API_URL
 from .coordinator import blocks_from_options
 
@@ -34,7 +34,7 @@ class StigaConfigFlow(ConfigFlow, domain=DOMAIN):
         return StigaOptionsFlow()
 
     async def _async_validate(self, email: str, password: str) -> str | None:
-        """Return an error key, or None when the account has at least one robot."""
+        """Return an error key, or None when the account has robots we can connect to."""
         auth = StigaAuth(async_get_clientsession(self.hass), email, password)
         try:
             robots = await auth.async_get_robots()
@@ -42,7 +42,11 @@ class StigaConfigFlow(ConfigFlow, domain=DOMAIN):
             return "invalid_auth"
         except CannotConnect:
             return "cannot_connect"
-        return None if robots else "no_robots"
+        if not robots:
+            return "no_robots"
+        if any(robot_broker(robot) not in PINNED_BROKERS for robot in robots):
+            return "unknown_broker"
+        return None
 
     async def async_step_user(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
         """Ask for the STIGA.GO credentials."""

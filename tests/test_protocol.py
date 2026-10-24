@@ -97,6 +97,14 @@ def test_schedule_blocks():
     assert pb_encode(msg) == pb_encode({1: 1, 2: REAL_SCHED})
 
 
+def test_scheduling_echo_refuses_what_it_cannot_send_back():
+    import pytest
+    payload = pb_encode({1: 1, 2: REAL_SCHED, 3: b"\x01\x02"})
+    s = StigaState(); s.apply_scheduling_settings(pb_decode(payload), payload)
+    with pytest.raises(ValueError):
+        s.scheduling_with_bytes(s.schedule_bytes)
+
+
 def test_settings_echo():
     s = StigaState(); s.apply_settings(REAL_SETTINGS)
     assert s.cutting_height == 45

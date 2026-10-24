@@ -440,14 +440,18 @@ class StigaState:
         return settings
 
     def scheduling_with_bytes(self, values: list[int]) -> dict[int, Any]:
-        """Full scheduling settings echo with a new bitmap."""
+        """Full scheduling settings echo with a new bitmap.
+
+        Like the settings echo, refuses when any other field holds anything but varints:
+        such a field cannot be sent back unchanged, and leaving it out could reset it.
+        """
         if self.scheduling_settings is None:
             raise ValueError("schedule not received yet")
-        scheduling: dict[int, Any] = {
-            field: value
-            for field, value in self.scheduling_settings.items()
-            if field != 2 and _is_varint_tree(value)
+        scheduling = {
+            field: value for field, value in self.scheduling_settings.items() if field != 2
         }
+        if not all(_is_varint_tree(value) for value in scheduling.values()):
+            raise ValueError(f"scheduling settings contain non-varint fields: {scheduling}")
         scheduling[2] = encode_schedule_bytes(values)
         return dict(sorted(scheduling.items()))
 

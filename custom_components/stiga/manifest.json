@@ -3,11 +3,13 @@
   "name": "STIGA Robot Mower",
   "codeowners": ["@frigussolutions"],
   "config_flow": true,
+  "dependencies": ["http"],
+  "after_dependencies": ["frontend", "lovelace"],
   "documentation": "https://github.com/frigussolutions/ha-stiga",
   "integration_type": "hub",
   "iot_class": "cloud_push",
   "issue_tracker": "https://github.com/frigussolutions/ha-stiga/issues",
   "loggers": ["paho"],
   "requirements": ["paho-mqtt>=2.0.0"],
-  "version": "0.2.0"
+  "version": "0.3.0"
 }

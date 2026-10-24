@@ -16,7 +16,7 @@ from homeassistant.helpers.event import async_call_later, async_track_time_inter
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.util import dt as dt_util
 
-from .api import StigaAuth, StigaError, StigaMqtt
+from .api import StigaAuth, StigaError, StigaMqtt, robot_broker
 from .const import (
     COMMAND_ACK_TIMEOUT,
     CONF_BLOCKS,
@@ -87,7 +87,7 @@ class StigaCoordinator(DataUpdateCoordinator[StigaState]):
         self.data = StigaState(blocks=blocks_from_options(entry.options))
         self._mqtt = StigaMqtt(
             hass,
-            robot.get("broker_id") or "broker",
+            robot_broker(robot),
             client_cert,
             [f"{self.mac}/LOG/+", f"CMD_ROBOT_ACK/{self.mac}"],
             self._handle_message,
@@ -225,10 +225,12 @@ class StigaCoordinator(DataUpdateCoordinator[StigaState]):
             if values is None:
                 raise HomeAssistantError("Schedule not received yet")
             new = with_schedule_block(values, day, block.slots, enabled)
+            try:
+                scheduling = self.data.scheduling_with_bytes(new)
+            except ValueError as err:
+                raise HomeAssistantError(str(err)) from err
             await self.async_send_command(
-                CMD_SCHEDULING_SETTINGS_UPDATE,
-                self.data.scheduling_with_bytes(new),
-                refresh="SCHEDULING_SETTINGS",
+                CMD_SCHEDULING_SETTINGS_UPDATE, scheduling, refresh="SCHEDULING_SETTINGS"
             )
             # Optimistic, so a quick second toggle builds on this one.
             self.data.schedule_bytes = new
